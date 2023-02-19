@@ -22,6 +22,7 @@ pub enum MimeType {
   Rtf,
   Svg,
   Mp4,
+  Less,
 }
 
 impl std::fmt::Display for MimeType {
@@ -38,6 +39,7 @@ impl std::fmt::Display for MimeType {
       MimeType::Rtf => "application/rtf",
       MimeType::Svg => "image/svg+xml",
       MimeType::Mp4 => "video/mp4",
+      MimeType::Less => "text/less",
     };
     write!(f, "{mime}")
   }
@@ -60,6 +62,7 @@ impl MimeType {
       Some("rtf") => Self::Rtf,
       Some("svg") => Self::Svg,
       Some("mp4") => Self::Mp4,
+      Some("less") => Self::Less,
       // Assume HTML when a TLD is found for eg. `wry:://tauri.app` | `wry://hello.com`
       Some(_) => Self::Html,
       // https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types/Common_types
@@ -130,6 +133,9 @@ mod tests {
 
     let mp4: String = MimeType::parse_from_uri("https://example.com/video.mp4").to_string();
     assert_eq!(mp4, String::from("video/mp4"));
+    
+    let less: String = MimeType::parse_from_uri("https://example.com/video.less").to_string();
+    assert_eq!(mp4, String::from("text/less"));
 
     let custom_scheme = MimeType::parse_from_uri("wry://tauri.app").to_string();
     assert_eq!(custom_scheme, String::from("text/html"));
